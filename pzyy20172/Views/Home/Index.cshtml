@@ -1,0 +1,83 @@
+﻿@{
+	Layout = null;
+	ViewBag.Title = "Home Page";
+}
+<!DOCTYPE html>
+<html class="js cssanimations">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>@(pzyy20172.Common.Const.SITE_NAME)</title>
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default am-no-layout">
+		<div class="am-header-left am-header-nav"> <a href="javascript:;" onclick="javascript :history.back(-1);" class=""><span class="am-header-nav-title"></span><i class="am-header-icon am-icon-chevron-left f18"></i></a></div>
+	</header>
+	<!--7层渐变---->
+	<div data-am-widget="slider" class="am-slider am-slider-c2 am-sliders am-no-layout" data-am-slider="{&quot;directionNav&quot;:false}">
+		<div class="am-viewport" style="overflow: hidden; position: relative;">
+			<ul class="am-slides" style="width: 1400%; transition-duration: 0.6s; transform: translate3d(-794px, 0px, 0px);">
+					<li class='clone' aria-hidden='true' style="width: 397px; float: left; display: block;">
+						<a href="#"><img src="/upload/images/1.jpg" draggable="false" style="width:414px; height:161px;"></a>
+						<div class="am-slider-desc">图片1</div>
+					</li>
+				<li class='clone' aria-hidden='true' style="width: 397px; float: left; display: block;">
+					<a href="#"><img src="/upload/images/2.jpg" draggable="false" style="width:414px; height:161px;"></a>
+					<div class="am-slider-desc">图片2</div>
+				</li>
+				<li class='clone' aria-hidden='true' style="width: 397px; float: left; display: block;">
+					<a href="#"><img src="/upload/images/3.jpg" draggable="false" style="width:414px; height:161px;"></a>
+					<div class="am-slider-desc">图片3</div>
+				</li>
+				@*<li class="" style="width: 397px; float: left; display: block;">
+						<img src="/content/images/dd/02.jpg" draggable="false">
+						<div class="am-slider-desc">鹿城区人力社保局召开半年度工作例会</div>
+					</li>*@
+			</ul>
+		</div>
+		<ol class="am-control-nav am-control-paging">
+			<li><a class="am-active">1</a><i></i></li>
+			<li><a class="">2</a><i></i></li>
+			<li><a class="">3</a><i></i></li>
+		</ol>
+	</div>
+	<div class="am-container" style="margin-top:-43px; padding:0px;">
+		<div data-am-widget="list_news" class="am-list-news am-list-news-default am-no-layout">
+			<div class="am-list-news-hd am-cf"><a href="#" class="t10"><h2>班务公开</h2></a></div>
+		</div>
+	</div>
+	<div class="am-container" style="margin-top:43px; padding:0px;">
+		<div class="dh am-cf">
+			<ul>
+				<a href="/YuLu/List/"><li class="h200"><i class="am-icon-road am-icon-md"></i><span>老师语录</span></li></a>
+				<a href="/Home/ShowPic/?url=/upload/images/KeChengBiao.jpg"><li><i class="am-icon-newspaper-o am-icon-md"></i><span>课程表</span></li></a>
+				<a href="/Home/ShowPic/?url=/upload/images/ZuoXiBiao.jpg"><li><i class="am-icon-cubes am-icon-md"></i><span>作息表</span></li></a>
+				<a href="/Home/ShowPic/?url=/upload/images/WeiSheng.jpg"><li><i class="am-icon-trophy am-icon-md"></i><span>卫生值日表</span></li></a>
+				<a href="/Home/Contact/"><li><i class="am-icon-group am-icon-md"></i><span>通讯录</span></li></a>
+				@*<a href="/Home/List/?ID="><li style="float:right;"><i class="am-icon-comments-o am-icon-md"></i><span>老师语录</span></li></a>
+				<a href="/Home/List/?ID="><li class="w200"><i class="am-icon-edit am-icon-md"></i><span>老师语录</span></li></a>*@
+			</ul>
+		</div>
+	</div>
+	<div class="am-container" style="padding:0px;">
+		<div data-am-widget="list_news" class="am-list-news am-list-news-default am-no-layout">
+			<div class="am-list-news-hd am-cf"><a href="#" class="t10"><h2>互动区</h2></a></div>
+		</div>
+	</div>
+	<div class="am-container" style="margin-top:43px; padding:0px;">
+		<div class="dh am-cf">
+			<ul>
+				<a href="/Photo/AlbumList/"><li><i class="am-icon-newspaper-o am-icon-md"></i><span>班级相册</span></li></a>
+				<a href="/Store/Index/"><li><i class="am-icon-cubes am-icon-md"></i><span>学习资料</span></li></a>
+				@*<a href="/Home/List/?ID="><li><i class="am-icon-trophy am-icon-md"></i><span>老师语录</span></li></a>*@
+			</ul>
+		</div>
+	</div>
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>

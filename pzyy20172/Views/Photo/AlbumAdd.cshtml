@@ -1,0 +1,83 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<title>@ViewBag.Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="~/Content/assets/jquery/jquery-1.10.2.min.js"></script>
+	<script src="~/Content/assets/jquery/jquery.unobtrusive-ajax.min.js"></script>
+	<script src="~/Content/assets/jquery/jquery.validate.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			<a href="#title-link" class="">
+				创建新相册
+			</a>
+		</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	@RenderPage("~/Views/Partial/PageIntroduce.cshtml", new { Msg = "相册都是公共开放的，任何人都可以在您的相册里上传照片，请尽量给相册取一个主题鲜明的名称。" })
+	<div class="am-g am-container">
+		<div class="am-u-lg-12">
+			<div class="am-g">
+				<div class="am-u-lg-6 am-u-md-4 am-u-sm-12">
+					@using (Ajax.BeginForm("AlbumAddUpdate", "Photo", new AjaxOptions { OnSuccess = "myFormSuccess" }, new { @class = "am-form am-form-horizontal" }))
+					{
+						<label for="AlbumName" class="about-color">相册名称</label>
+						<input id="AlbumName" name="AlbumName" type="text">
+						<br>
+						<label for="Descript" class="about-color">相册描述</label>
+						<textarea id="Descript" name="Descript"></textarea>
+						<br>
+						<button type="submit" class="am-btn am-btn-block am-btn-success am-btn-lg external-link"><i class="am-icon-check"></i> 提 交</button>
+					}
+					<hr class="am-article-divider am-show-sm-only">
+				</div>
+			</div>
+		</div>
+	</div>
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>
+<script type="text/javascript">
+	function myFormSuccess(data) {
+		ShowAlert(data.msg,1);
+		if (data.result == "1") {
+			location.replace("/Photo/AlbumList/");
+		}
+	}
+
+	$(document).ready(function () {
+		$("#form0").validate({
+			rules: {
+				AlbumName: {
+					required: true,
+					rangelength: [2, 20]
+				}
+			},
+			messages: {
+				AlbumName: {
+					required: "相册名称不能为空。",
+					rangelength: jQuery.format("相册名称需在2到20字之间。")
+				}
+			}
+		});
+	});
+</script>

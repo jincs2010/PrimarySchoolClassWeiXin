@@ -1,0 +1,217 @@
+﻿@model IEnumerable<pzyy20172.Model.photo_list>
+@{
+	Layout = null;
+	pzyy20172.BLL.user_info bllUser = new pzyy20172.BLL.user_info();
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<title>@ViewBag.Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+
+	<link href="~/Content/assets/webuploader/webuploader.css" rel="stylesheet" />
+	<script src="~/Content/assets/webuploader/webuploader.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			<a href="#title-link" class="">
+				相册查看
+			</a>
+		</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	<form method="get">
+		<input type="text" name="ID" value="@kin.Utilities.WebHttp.GetRequestInt("ID")" style="display:none;" />
+
+		<input type="text" id="txtArray" name="txtArray" value="@kin.Utilities.WebHttp.GetRequest("txtArray")" style="display:none;" />
+		<input type="text" id="txtArrayDesc" name="txtArrayDesc" value="@kin.Utilities.WebHttp.GetRequest("txtArrayDesc")" style="display:none;" />
+		<input type="text" id="txtPage" name="txtPage" value="@kin.Utilities.WebHttp.GetRequest("txtPage")" style="display:none;" />
+		<input type="text" id="txtPageSize" name="txtPageSize" value="@kin.Utilities.WebHttp.GetRequest("txtPageSize")" style="display:none;" />
+	</form>
+	<!-- content start -->
+	<div class="admin-content">
+		<div class="admin-content-body">
+			<div class="am-cf am-padding am-padding-bottom-0">
+				<div class="am-fl am-cf">
+					<strong class="am-text-primary am-text-lg">相册</strong> / <small>@ViewBag.AlbumName</small>
+				</div>
+				<div class="am-fr">
+					<input type="hidden" name="txtPicUrl" id="txtPicUrl" />
+					<div id="fileList" class="uploader-list pull-left" style="width:100%;"></div>
+					<div id="filePicker" style="display:none;"></div>
+					<button id="btnUpload" type="button" class="am-btn am-btn-warning"><i class="am-icon-cloud-upload"></i> 上传照片</button>
+				</div>
+			</div>
+			<hr style="margin:5px;">
+			<ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-gallery-default am-no-layout" data-am-gallery="{ pureview: true }">
+				@foreach (var item in Model)
+				{
+					<li>
+						<div class="am-gallery-item">
+							<img src="@item.Url">
+							<div>
+								<div class="am-fl">
+									<h3 class="am-gallery-title">@bllUser.GetNameByID(item.ToUserID) 上传</h3>
+									<div class="am-gallery-desc">@item.AddTime</div>
+								</div>
+								@if (item.ToUserID == pzyy20172.Common.Cookie.UserID)
+								{
+									<button class="am-btn am-btn-secondary am-btn-xs am-fr" style="margin-top:10px;" onclick="DeletePhoto(@item.ID)">删除 <i class="am-icon-remove"></i></button>
+								}
+							</div>
+						</div>
+					</li>
+				}
+			</ul>
+			@if (Convert.ToInt32(ViewBag.TotalRowCount) > Convert.ToInt32(ViewBag.PageSize))
+			{
+				@RenderPage("~/Views/Partial/Pager.cshtml", new { TotalRowCount = ViewBag.TotalRowCount, PageSize = ViewBag.PageSize, PageIndex = ViewBag.CurPageIndex })
+			}
+		</div>
+	</div>
+	<!-- content end -->
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>
+<script language="javascript">
+	//WebUploader开始
+	jQuery(function () {
+		var $ = jQuery,
+			$list = $('#fileList'),
+			// 优化retina, 在retina下这个值是2
+			ratio = window.devicePixelRatio || 1,
+
+			// 缩略图大小
+			thumbnailWidth = 100 * ratio,
+			thumbnailHeight = 100 * ratio,
+
+			// Web Uploader实例
+			uploader;
+
+		// 初始化Web Uploader
+		uploader = WebUploader.create({
+			auto: true,	// 自动上传。
+			compress: false,	//是否压缩图片,默认true
+			swf: '/Content/assets/webuploader/Uploader.swf',
+			server: '/Data/UpLoadProcess/',
+
+			// 选择文件的按钮。可选。
+			// 内部根据当前运行是创建，可能是input元素，也可能是flash.
+			pick: '#filePicker',
+
+			// 只允许选择文件，可选。
+			accept: {
+				title: 'Images',
+				extensions: 'gif,jpg,jpeg,bmp,png',
+				mimeTypes: 'image/*'
+			}
+		});
+
+		// 文件上传过程中创建进度条实时显示。
+		uploader.on('uploadProgress', function (file, percentage) {
+			var $li = $('#' + file.id),
+				$percent = $li.find('.progress span');
+
+			// 避免重复创建
+			if (!$percent.length) {
+				$percent = $('<p class="progress"><span></span></p>')
+					.appendTo($li)
+					.find('span');
+			}
+
+			$percent.css('width', percentage * 100 + '%');
+		});
+
+		// 文件上传成功，提交给数据库，重载当前页，未完成
+		uploader.on('uploadSuccess', function (file, response) {
+			//var filename = response.filePath.replace("/Upload/", "");
+			//$("#fileList").html("<img src='" + response.filePath + "' style='height:110px;' />");
+			//$("#PicUrl").val(response.filePath);
+
+			//上传成功后，再插入数据库，最后提示成功刷新页面
+			$.ajax({
+				type: "post",
+				url: "/Photo/PhotoAddUpdate/",
+				data: { AlbumID: @(kin.Utilities.WebHttp.GetRequestInt("ID")), Url: response.filePath },
+				success: function (data) {
+					if (data.result == 1) {
+					}
+				}
+			});
+
+		});
+
+		// 文件上传失败，现实上传出错。
+		uploader.on('uploadError', function (file) {
+			var $li = $('#' + file.id),
+				$error = $li.find('div.error');
+
+			// 避免重复创建
+			if (!$error.length) {
+				$error = $('<div class="error"></div>').appendTo($li);
+			}
+
+			$error.text('上传失败');
+		});
+
+		// 完成上传完了，成功或者失败，先删除进度条。
+		uploader.on('uploadComplete', function (file) {
+			$('#' + file.id).find('.progress').remove();
+		});
+
+		uploader.on('uploadFinished', function () {
+			//ShowAlert(, 3);
+			$("#my-alert .am-modal-hd").html("上传成功！");
+			$('#my-alert').modal();
+			window.setTimeout(AlertReplace, 3 * 1000);
+		});
+
+		//新按钮来替代原来的按钮，因原按钮样式不可自定义
+		$("#btnUpload").click(function () {
+			var tobtn = $(".webuploader-element-invisible");
+			tobtn.click();
+		});
+	});
+	//WebUploader结束
+
+	function AlertReplace()
+	{
+		location.replace(location.href);
+	}
+
+	function DeletePhoto(photoid)
+	{
+		$.ajax({
+				type: "post",
+				url: "/Photo/PhotoDelete/",
+				data: { ID: photoid },
+				success: function (data) {
+					if (data.result == 1) {
+						//ShowAlert("删除成功！", 2);
+						$("#my-alert .am-modal-hd").html("删除成功！");
+						$('#my-alert').modal();
+						window.setTimeout(AlertReplace, 2 * 1000);
+					}
+				}
+			});
+	}
+
+	$(document).ready(function () {
+	});
+</script>

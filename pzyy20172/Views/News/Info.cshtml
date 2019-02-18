@@ -1,0 +1,64 @@
+﻿@model pzyy20172.Model.news
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<title>@ViewBag.Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			<a href="#title-link" class="">
+				信息查看
+			</a>
+		</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi" style="margin-top:0px; height:10px;">
+	</div>
+	<article class="am-article">
+		<div class="am-article-hd am-text-center">
+			<h1 class="am-article-title">@Model.Title</h1>
+			<p class="am-article-meta">
+				发布时间：@(Model.AddTime)
+			</p>
+			<hr data-am-widget="divider" class="am-divider am-divider-default am-no-layout">
+		</div>
+		<div class="am-article-bd">
+			@if (string.IsNullOrEmpty(Model.PicIndex) == false)
+			{
+				<div>
+					<img src="@Model.PicIndex"><br>
+				</div>
+			}
+			<div>
+				@Html.Raw(Model.Content)
+			</div>
+			<br>
+		</div>
+	</article>
+	<div class="contentCon am-cf" style="border-top:dashed 1px #CCCCCC; font-size:12px; width:96%; line-height:20px; margin:0 auto; padding-top:10px">
+		<span style="width:100%; float:left">上一条：@Html.Raw(ViewBag.PrevNew.ToString())</span>
+		<span style="width:100%; float:right">下一条：@Html.Raw(ViewBag.NextNew.ToString())</span>
+	</div>
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>

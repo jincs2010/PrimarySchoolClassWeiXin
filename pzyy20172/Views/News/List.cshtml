@@ -1,0 +1,75 @@
+﻿@model IEnumerable<pzyy20172.Model.news>
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title></title>
+	<meta name="keywords" content=" 鹿城人力资源和社会保障局 综合管理鹿城区人力资源和社会保障局">
+	<meta name="sitename" content="鹿城人力资源和社会保障局">
+	<meta name="description" content=" 鹿城人力资源和社会保障局 综合管理 鹿城区人力资源和社会保障局">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title" style="margin:0px;">活动记录</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	<form method="get">
+		<input type="text" id="txtArray" name="txtArray" value="@kin.Utilities.WebHttp.GetRequest("txtArray")" style="display:none;" />
+		<input type="text" id="txtArrayDesc" name="txtArrayDesc" value="@kin.Utilities.WebHttp.GetRequest("txtArrayDesc")" style="display:none;" />
+		<input type="text" id="txtPage" name="txtPage" value="@kin.Utilities.WebHttp.GetRequest("txtPage")" style="display:none;" />
+		<input type="text" id="txtPageSize" name="txtPageSize" value="@kin.Utilities.WebHttp.GetRequest("txtPageSize")" style="display:none;" />
+	</form>
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi" style="margin-top:0px; height:10px;">
+	</div>
+	<div data-am-widget="list_news" class="am-list-news am-list-news-default am-no-layout">
+
+		<div class="am-list-news-bd">
+			<ul class="am-list">
+				@foreach (var item in Model)
+				{
+					if (string.IsNullOrEmpty(item.PicIndex))
+					{
+						<li class="am-g am-list-item-desced">
+							<a class="am-list-item-hd" href="/News/Info/?ID=@(item.ID)">@(item.Title)<span class="am-list-date">@item.AddTime</span></a>
+
+						</li>
+					}
+					else
+					{
+						<li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
+							<div class="am-u-sm-4 am-list-thumb"><a href="/News/Info/?ID=@(item.ID)"><img src="@item.PicIndex" alt="@item.Title"></a></div>
+							<div class=" am-u-sm-8 am-list-main">
+								<h3 class="am-list-item-hd"><a href=""/News/Info/?ID=@(item.ID)">@item.Title</a></h3>
+								<div class="am-list-item-text">@item.AddTime</div>
+							</div>
+						</li>
+						}
+						}
+					</ul>
+				</div>
+			</div>
+			@if (Convert.ToInt32(ViewBag.TotalRowCount) > Convert.ToInt32(ViewBag.PageSize))
+					{
+				@RenderPage("~/Views/Partial/Pager.cshtml", new { TotalRowCount = ViewBag.TotalRowCount, PageSize = ViewBag.PageSize, PageIndex = ViewBag.CurPageIndex })
+					}
+			@{Html.RenderAction("Footer", "Partial");}
+		</body>
+	</html>

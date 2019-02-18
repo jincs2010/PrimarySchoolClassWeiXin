@@ -1,0 +1,36 @@
+﻿
+@{
+	Layout = null;
+	ViewBag.Title = "Footer";
+}
+@*<div id="divAlert" class="am-alert" data-am-alert>
+	<button type="button" class="am-close">&times;</button>
+	<p>提示内容</p>
+</div>*@
+<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+	<div class="am-modal-dialog">
+		<div class="am-modal-hd">提示内容</div>
+		<div class="am-modal-bd">
+			2秒自动关闭
+		</div>
+		<div class="am-modal-footer">
+			<span class="am-modal-btn">确定</span>
+		</div>
+	</div>
+</div>
+<footer data-am-widget="footer" class="am-footer am-footer-default am-no-layout" style="background-color:transparent;">
+	<div class="am-footer-miscs" style="border-top: solid 1px #FFF;">
+		<p>版权所有：@(pzyy20172.Common.Const.SITE_NAME)</p>
+	</div>
+</footer>
+<script src="~/Content/custom.js"></script>
+<script src="/content/js/min.js"></script>
+<script>
+	var _hmt = _hmt || [];
+	(function () {
+		var hm = document.createElement("script");
+		hm.src = "https://hm.baidu.com/hm.js?70e053ce754c3230561dfe540e1aa809";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>

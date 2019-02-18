@@ -1,0 +1,41 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<title>@ViewBag.Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			<a href="#title-link" class="">
+				错误
+			</a>
+		</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi" style="margin-top:0px; height:10px;">
+	</div>
+	<article class="am-article">
+		@(Server.UrlDecode(kin.Utilities.WebHttp.GetRequest("msg")))
+	</article>
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>

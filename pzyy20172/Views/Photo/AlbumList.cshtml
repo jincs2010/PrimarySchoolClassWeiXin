@@ -1,0 +1,74 @@
+﻿@model IEnumerable<pzyy20172.Model.photo_album>
+@{
+	Layout = null;
+	pzyy20172.BLL.user_info bllUser = new pzyy20172.BLL.user_info();
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<title>@ViewBag.Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			<a href="#title-link" class="">
+				班级相册
+			</a>
+		</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	<form method="get">
+		<input type="text" id="txtArray" name="txtArray" value="@kin.Utilities.WebHttp.GetRequest("txtArray")" style="display:none;" />
+		<input type="text" id="txtArrayDesc" name="txtArrayDesc" value="@kin.Utilities.WebHttp.GetRequest("txtArrayDesc")" style="display:none;" />
+		<input type="text" id="txtPage" name="txtPage" value="@kin.Utilities.WebHttp.GetRequest("txtPage")" style="display:none;" />
+		<input type="text" id="txtPageSize" name="txtPageSize" value="@kin.Utilities.WebHttp.GetRequest("txtPageSize")" style="display:none;" />
+	</form>
+	@RenderPage("~/Views/Partial/PageIntroduce.cshtml", new { Msg = "记录孩子的每一天成长，留住美好瞬间，欢迎大家积极上传。" })
+	<div data-am-widget="list_news" class="am-list-news am-list-news-default am-no-layout">
+			<a id="doc-dl-btn" href="/Photo/AlbumAdd/" class="am-btn am-btn-block am-btn-success am-btn-lg external-link"><i class="am-icon-plus"></i> 创建新相册</a>
+		<div class="am-list-news-bd">
+			<ul class="am-list">
+				@foreach (var item in Model)
+				{
+					<a href="/Photo/PhotoList/?ID=@item.ID">
+						<li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
+							<div class="am-u-sm-4 am-list-thumb">
+								<img src="@(string.IsNullOrEmpty(item.CoverPics)?"/content/images/nopic.jpg":item.CoverPics)">
+							</div>
+							<div class="am-u-sm-8 am-list-main">
+								<h3 class="am-list-item-hd">
+									@item.AlbumName
+								</h3>
+								<div class="am-list-item-text">@(bllUser.GetNameByID(item.ToUserID)) 创建于@(item.AddTime)</div>
+								@*<div class="am-list-item-text">最后更新：@(item.UpTime)</div>*@
+								<div class="am-list-item-text">@item.Descript</div>
+							</div>
+						</li>
+					</a>
+				}
+			</ul>
+		</div>
+	</div>
+	@if (Convert.ToInt32(ViewBag.TotalRowCount) > Convert.ToInt32(ViewBag.PageSize))
+	{
+		@RenderPage("~/Views/Partial/Pager.cshtml", new { TotalRowCount = ViewBag.TotalRowCount, PageSize = ViewBag.PageSize, PageIndex = ViewBag.CurPageIndex })
+	}
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>

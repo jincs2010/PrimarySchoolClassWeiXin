@@ -1,0 +1,37 @@
+﻿@model IEnumerable<pzyy20172.Model.holiday>
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>【单】二(2)班家长打饭排班表</title>
+</head>
+<body>
+	<div style="font-size:12px;">
+		午间来协助管理的家长，可以带餐盘与孩子一起就餐。周一周五时间11:00-1:00，周二周三周四时间11:45-1:00.<br />
+		备注：<br />
+		周一周三和周五的双周，午间如有特殊情况与郭老师联系;<br />
+		周二周四和周五的单周，午间如有特殊情况与夏老师联系。<br />
+
+	</div>
+	<table cellpadding="2" cellspacing="1" border="0" style="background-color:black; width:100%; max-width:500px;">
+		<tr style="background-color:white;">
+			<td width="55%" style="font-weight:bold;">日期</td>
+			<td width="45%" style="font-weight:bold;">学生</td>
+		</tr>
+		@foreach (var item in Model)
+		{
+			<tr style="background-color:white;">
+				<td>@item.ToDate</td>
+				<td>@item.Remark</td>
+			</tr>
+		}
+	</table>
+	<div>
+	</div>
+</body>
+</html>

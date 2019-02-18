@@ -1,0 +1,63 @@
+﻿@model IEnumerable<pzyy20172.Model.student_teacher>
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<title>@ViewBag.Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			<a href="#title-link" class="">
+				通讯录
+			</a>
+		</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi" style="margin-top:0px; height:10px;">
+	</div>
+	<!--列表开始-->
+	<div class="am-g">
+		<div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+			@foreach (var item in Model)
+			{
+				<div class="am-thumbnail">
+					@*<img class="am-fr" src="/Upload/User/<%# Eval(" PhotoUrl")%>"
+					style="font-weight: bold; float: right; width: 50px; height: 50px;" />*@
+					@if (item.Type == 0)
+					{
+						<dt>学号：@(item.ID)&nbsp;&nbsp;&nbsp;姓名：@item.Name</dt>
+						<dd>联系方式：@item.LinkText</dd>
+						<dd>@item.Remark</dd>
+					}
+					else
+					{
+						<dt>老师：@item.Name</dt>
+						<dd>联系方式：@item.LinkText</dd>
+						<dd>@item.Remark</dd>
+					}
+				</div>
+			}
+		</div>
+	</div>
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>

@@ -1,0 +1,113 @@
+﻿@{
+	Layout = null;
+}
+<!doctype html>
+<html class="no-js javascript">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>@(pzyy20172.Common.Const.SITE_NAME)</title>
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link href="~/Content/css/custom.css" rel="stylesheet" />
+	<script src="~/Content/assets/jquery/jquery-1.10.2.min.js"></script>
+	<script src="~/Content/assets/jquery/jquery.unobtrusive-ajax.min.js"></script>
+	<script src="~/Content/assets/jquery/jquery.validate.min.js"></script>
+</head>
+<body style="padding-bottom:54px">
+	<header data-am-widget="header" class="am-header am-header-default">
+		<div class="am-header-left am-header-nav">
+			
+		</div>
+		<h1 class="am-header-title" style="margin:0px;">身份绑定</h1>
+		<div class="am-header-right am-header-nav">
+			
+		</div>
+	</header>
+	<div class="content">
+		<div class="am-container am-margin-top-lg">
+			<div class="am-g">
+				<div class="am-u-sm-12">
+					<div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
+						<ul class="am-tabs-nav am-nav am-nav-tabs">
+							<li class="am-active"><a href="javascript: void(0)">家长</a></li>
+							<li><a href="javascript: void(0)">老师</a></li>
+						</ul>
+
+						<div class="am-tabs-bd">
+							<div class="am-tab-panel am-active">
+								@using (Ajax.BeginForm("BindUpdate", "Home", new AjaxOptions { OnSuccess = "myFormSuccess" }, new { @class = "am-form am-form-horizontal" }))
+								{
+									<hr>
+									<div class="am-form-group">
+										<div class="am-u-sm-12">
+											<div class="am-form-icon">
+												<i class="am-icon-user" style="top:20px;"></i>
+												<input type="text" name="txtUserName" id="txtUserName" class="am-form-field" placeholder="孩子姓名(必填)">
+											</div>
+										</div>
+									</div>
+									<div class="am-form-group">
+										<div class="am-u-sm-12">
+											<div class="am-form-icon">
+												<i class="am-icon-user" style="top:20px;"></i>
+												<input type="text" name="txtNickName" id="txtNickName" class="am-form-field" placeholder="孩子对您的称谓(可不填)">
+											</div>
+										</div>
+									</div>
+									<div class="am-form-group am-margin-bottom-sm">
+										<div class="am-u-sm-12">
+											<input type="text" name="OpenID" id="OpenID" class="am-hide" value="@kin.Utilities.WebHttp.GetRequest("OpenID")">
+											<input type="submit" id="loginsubmit" value="绑定并进入" class="am-btn-block am-btn am-btn-primary">
+										</div>
+									</div>
+								}
+								@RenderPage("~/Views/Partial/PageIntroduce.cshtml", new { Msg = "第一次登录请绑定身份，孩子姓名 + 称谓 = 您在此网站中的昵称，如：金可可麻麻，李果果爸爸…" })
+							</div>
+							<div class="am-tab-panel">
+								@using (Ajax.BeginForm("BindUpdateTeacher", "Home", new AjaxOptions { OnSuccess = "myFormSuccess" }, new { @class = "am-form am-form-horizontal" }))
+								{
+									<hr>
+									<div class="am-form-group">
+										<div class="am-u-sm-12">
+											<div class="am-form-icon">
+												<i class="am-icon-user" style="top:20px;"></i>
+												<input type="text" name="txtTeacherName" id="txtTeacherName" class="am-form-field" placeholder="老师姓名(必填)">
+											</div>
+										</div>
+									</div>
+									<div class="am-form-group am-margin-bottom-sm">
+										<div class="am-u-sm-12">
+											<input type="text" name="OpenID" id="OpenID" class="am-hide" value="@kin.Utilities.WebHttp.GetRequest("OpenID")">
+											<input type="submit" id="loginsubmit" value="绑定并进入" class="am-btn-block am-btn am-btn-primary">
+										</div>
+									</div>
+								}
+								@RenderPage("~/Views/Partial/PageIntroduce.cshtml", new { Msg = "第一次登录请绑定身份，如绑定失败，可能录入信息有误，请联系班主任或家委会。" })
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>
+<script type="text/javascript">
+	function myFormSuccess(data) {
+		if (data.result == "1") {
+			ShowAlert("身份绑定成功！",1);
+			location.replace("/Home/Index/");
+		}
+		else {
+			ShowAlert(data.msg,2);
+		}
+	}
+
+	$(document).ready(function () {
+		
+	});
+</script>

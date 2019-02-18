@@ -1,0 +1,70 @@
+﻿@{
+	Layout = null;
+	//计算页码组的开始和结束值
+	int _startIndex = 1, _endIndex = 1;
+	int _curPageIndex = Convert.ToInt32(PageData["PageIndex"]);
+	int _pageSize = Convert.ToInt32(PageData["PageSize"]);
+	int _totalPageCount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(PageData["TotalRowCount"]) / _pageSize));
+	if (_totalPageCount <= 11)
+	{
+		_endIndex = _totalPageCount;
+	}
+	else
+	{
+		if (_curPageIndex <= 6)
+		{
+			_startIndex = 1;
+			_endIndex = 11;
+		}
+		else if (_curPageIndex >= _totalPageCount - 5)
+		{
+			_startIndex = _curPageIndex - 5;
+			_endIndex = _totalPageCount;
+		}
+		else
+		{
+			_startIndex = _curPageIndex - 5;
+			_endIndex = _curPageIndex + 5;
+		}
+	}
+}
+<script type="text/javascript">
+	$(function () {
+		$("#ddl_pagesize").on("change", function () {
+			var ddl_pagesizeValue = $(this).val();
+			ToPageSize(ddl_pagesizeValue);
+		});
+	});
+	/******* 分页控制中调用，转至第几页 *******************************/
+	function ToPage(pageIndex) {
+		$('#txtPage').val(pageIndex);
+		$("form").submit();
+	}
+	function ToPageSize(pagesize) {
+		$('#txtPageSize').val(pagesize);
+		$("form").submit();
+	}
+</script>
+<div class="am-margin am-cf">
+	<hr />
+	<ol class="am-pagination am-fr">
+@if (_curPageIndex > 1) {
+		<li><a href="javascript:ToPage(1)">&laquo;</a></li>
+}
+@for (int _index = _startIndex; _index <= _endIndex; _index++)
+			{
+				if (_index == _curPageIndex)
+				{
+		<li class="am-active"><a href="javascript:ToPage(@_index)">@_index</a></li>
+				}
+				else
+				{
+		<li><a href="javascript:ToPage(@_index)">@_index</a></li>
+				}
+			}
+@if (_curPageIndex < _totalPageCount)
+{
+		<li><a href="javascript:ToPage(@_totalPageCount)">&raquo;</a></li>
+}
+	</ol>
+</div>

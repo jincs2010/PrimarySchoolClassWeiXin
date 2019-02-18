@@ -1,0 +1,117 @@
+﻿@model IEnumerable<pzyy20172.Model.teacher_yulu>
+@{
+	Layout = null;
+	pzyy20172.BLL.user_info bllUser = new pzyy20172.BLL.user_info();
+}
+<!DOCTYPE html>
+<html class="am-touch js cssanimations">
+<head>
+	<title>@ViewBag.Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="stylesheet" href="/content/assets/amaze/css/amazeui.min.css">
+	<link rel="stylesheet" href="/content/css/app.css">
+	<script src="/content/js/jquery.min.js"></script>
+</head>
+<body class="am-with-fixed-navbar">
+	<header data-am-widget="header" class="am-header am-header-default" style="background-color:#0e90d2;">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:history.back();" class="">
+				<i class="am-header-icon am-icon-arrow-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			<a href="#title-link" class="">
+				老师语录
+			</a>
+		</h1>
+		<div class="am-header-right am-header-nav">
+			<a href="/Home/" class="">
+				<i class="am-header-icon am-icon-home"></i>
+			</a>
+		</div>
+	</header>
+	<form method="get">
+		<input type="text" id="txtArray" name="txtArray" value="@kin.Utilities.WebHttp.GetRequest("txtArray")" style="display:none;" />
+		<input type="text" id="txtArrayDesc" name="txtArrayDesc" value="@kin.Utilities.WebHttp.GetRequest("txtArrayDesc")" style="display:none;" />
+		<input type="text" id="txtPage" name="txtPage" value="@kin.Utilities.WebHttp.GetRequest("txtPage")" style="display:none;" />
+		<input type="text" id="txtPageSize" name="txtPageSize" value="@kin.Utilities.WebHttp.GetRequest("txtPageSize")" style="display:none;" />
+	</form>
+	@RenderPage("~/Views/Partial/PageIntroduce.cshtml", new { Msg = "老师每天布置的作业，公告，建议指导等都将发布于此，内容可以是文字、图片、语音、小视频。请家长们每天及时来查阅。" })
+	<div class="am-panel-bd am-collapse am-in am-cf" id="collapse-panel-3">
+		<ul class="am-comments-list admin-content-comment">
+			@foreach (var item in Model)
+			{
+				<li class="am-comment">
+					<a href="#"><img src="/upload/@bllUser.GetWeiXinIconByID(item.ToUserID)" class="am-comment-avatar" width="48" height="48"  
+									 onerror="this.src='/content/images/noheader.gif';this.onerror=null"></a>
+					<div class="am-comment-main">
+						<header class="am-comment-hd">
+							<div class="am-comment-meta"><a href="#" class="am-comment-author">@(bllUser.GetNameByID(item.ToUserID))</a> 发表于 <time>@(item.AddTime)</time></div>
+						</header>
+						<div class="am-comment-bd">
+							@if (item.MsgType == 1)
+							{
+								<p>@(item.Content)</p>
+							}
+							else if (item.MsgType == 2)
+							{
+								<img src="@item.Content" style="width:100%;" />
+							}
+							else if (item.MsgType == 3)
+							{
+								<audio src="@(item.Content)" controls="controls"></audio>
+							}
+							else if (item.MsgType == 4)
+							{
+								string[] ss = item.Content.Split('|');
+								if (ss.Length > 1)
+								{
+									@Html.Raw("<video src=\"" + ss[0] + "\" poster=\"" + ss[1] + "\" style=\"width:100%;\"></video>");
+								}
+								else
+								{
+									@Html.Raw("<video src=\"" + ss[0] + "\" style=\"width:100%;\"></video>");
+								}
+
+								//<a href=""><img src="@(item.Content.Replace(".mp4",".mp4"))" /></a>
+
+							}
+							@if (item.ToUserID == pzyy20172.Common.Cookie.UserID)
+							{
+								<div class="am-fr">
+									<button class="am-btn am-btn-default am-btn-xs" onclick="DeleteYuLu(@item.ID)">删除 <i class="am-icon-remove"></i></button>
+								</div>
+							}
+						</div>
+					</div>
+				</li>
+			}
+		</ul>
+		@if (Convert.ToInt32(ViewBag.TotalRowCount) > Convert.ToInt32(ViewBag.PageSize))
+		{
+			@RenderPage("~/Views/Partial/Pager.cshtml", new { TotalRowCount = ViewBag.TotalRowCount, PageSize = ViewBag.PageSize, PageIndex = ViewBag.CurPageIndex })
+		}
+	</div>
+	@{Html.RenderAction("Footer", "Partial");}
+</body>
+</html>
+<script type="text/javascript">
+	function DeleteYuLu(yuluid) {
+		$.ajax({
+			type: "post",
+			url: "/YuLu/Delete/",
+			data: { ID: yuluid },
+			success: function (data) {
+				if (data.result == 1) {
+					//ShowAlert("删除成功！", 2);
+					$("#my-alert .am-modal-hd").html("删除成功！");
+					$('#my-alert').modal();
+					window.setTimeout(location.replace(location.href), 2 * 1000);
+				}
+			}
+		});
+	}
+</script>
